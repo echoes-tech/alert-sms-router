@@ -33,56 +33,44 @@ EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vect
     
     dbo::Transaction transaction(*session);
     
-    Wt::Dbo::Query<Wt::Dbo::ptr<StateMessage>> query = session->find<StateMessage>().where("\"number\" = ?").bind(parameters["numero"]).orderBy("date_event");
+    Wt::Dbo::ptr<SavedSend> ptrMessage = session->find<SavedSend>().where("\"code_ref\" = ?").bind(parameters["message"].substr(0,3));
     
-    Wt::Dbo::collection<Wt::Dbo::ptr<StateMessage>> stateMessageList = query.resultList();
-    
-    if(stateMessageList.size() != 0)
+    if(ptrMessage.operator  bool())
     {
-        Wt::Dbo::ptr<SavedSend> dest = session->find<SavedSend>().where("\"id\" = ?").bind((*stateMessageList.begin())->id_message);
+        //création de l'état asw
+        StateMessage *stateMessage = new StateMessage();
+        stateMessage->id_message = ptrMessage;
+        stateMessage->date_event = Wt::WDateTime::currentDateTime();
+        stateMessage->state = StateMessage::StateList::Answered;
 
-        if(dest)
-        {        
-            //création de l'état asw
-            StateMessage *stateMessage = new StateMessage();
-            stateMessage->id_message = dest;
-            stateMessage->date_event = Wt::WDateTime::currentDateTime();
-            stateMessage->state = StateMessage::StateList::Answered;
-
-            //enregistrement
-            Wt::Dbo::ptr<StateMessage> stateMessageRcvPtr = session->add<StateMessage>(stateMessage);
+        //enregistrement
+        Wt::Dbo::ptr<StateMessage> stateMessageRcvPtr = session->add<StateMessage>(stateMessage);
             
-            //preparation de la reponse
-            Wt::Http::Client *client = new Wt::Http::Client();
+        //preparation de la reponse
+        Wt::Http::Client *client = new Wt::Http::Client();
             
-            string url = "http";
-            url += "://" + Wt::Utils::urlEncode(dest->adress_sender) +
-                    ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(dest->port)) + 
-                  "/itooki/asw";
+        string url = "http";
+        url += "://" + Wt::Utils::urlEncode(ptrMessage->adress_sender) +
+                ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(ptrMessage->port)) + 
+              "/itooki/asw";
             
-            string json = "{";
-            json += "\"numero\" : \"" + parameters["numero"] + "\",";
-            json += "\"message\" : \"" + parameters["message"] + "\"";
-            json += "}";
+        string json = "{";
+        json += "\"refenvoi\" : \"" + ptrMessage->refenvoi + "\",";
+        json += "\"message\" : \"" + parameters["message"] + "\"";
+        json += "}";
             
-            Wt::Http::Message httpMessage;
-            httpMessage.addBodyText(json);
+        Wt::Http::Message httpMessage;
+        httpMessage.addBodyText(json);
             
-            client->post(url, httpMessage);
-        }
-        else
-        {
-            res = EReturnCode::BAD_REQUEST;
-            const string err = "[Ack Resource] No sender with this id";
-            responseMsg = httpCodeToJSON(res, err);
-        }
+        client->post(url, httpMessage);
     }
     else
     {
         res = EReturnCode::BAD_REQUEST;
-        const string err = "[Ack Resource] No state found for this number";
+        const string err = "[ASW Resource] No message with this code";
         responseMsg = httpCodeToJSON(res, err);
     }
+
     return (res);
 }
 

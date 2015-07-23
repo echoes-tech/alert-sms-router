@@ -96,6 +96,8 @@ protected:
 
     virtual void handleRequest(const Wt::Http::Request &request, Wt::Http::Response &response);
 
+    std::string generateCode();
+    
    /* // a priori, useless
     template<class C>
     EReturnCode serialize(C &obj, std::string &responseMsg, EReturnCode successRes = EReturnCode::INTERNAL_SERVER_ERROR)

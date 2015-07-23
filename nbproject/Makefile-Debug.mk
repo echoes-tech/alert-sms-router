@@ -35,15 +35,15 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/AckResource.o \
-	${OBJECTDIR}/AswResource.o \
-	${OBJECTDIR}/Conf.o \
-	${OBJECTDIR}/PublicApiResource.o \
-	${OBJECTDIR}/SavedSend.o \
-	${OBJECTDIR}/SendResource.o \
-	${OBJECTDIR}/Session.o \
-	${OBJECTDIR}/StateMessage.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/main.o \
+	${OBJECTDIR}/src/AckResource.o \
+	${OBJECTDIR}/src/AswResource.o \
+	${OBJECTDIR}/src/Conf.o \
+	${OBJECTDIR}/src/PublicApiResource.o \
+	${OBJECTDIR}/src/SavedSend.o \
+	${OBJECTDIR}/src/SendResource.o \
+	${OBJECTDIR}/src/Session.o \
+	${OBJECTDIR}/src/StateMessage.o
 
 
 # C Compiler Flags
@@ -64,56 +64,56 @@ LDLIBSOPTIONS=-lboost_program_options -lwt -lwthttp -lwtdbo -lwtdbosqlite3 -lwtd
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-routeur
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-routeur: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-routeur ${OBJECTFILES} ${LDLIBSOPTIONS} -lboost_system
-
-${OBJECTDIR}/AckResource.o: AckResource.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AckResource.o AckResource.cpp
-
-${OBJECTDIR}/AswResource.o: AswResource.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/AswResource.o AswResource.cpp
-
-${OBJECTDIR}/Conf.o: Conf.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Conf.o Conf.cpp
-
-${OBJECTDIR}/PublicApiResource.o: PublicApiResource.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/PublicApiResource.o PublicApiResource.cpp
-
-${OBJECTDIR}/SavedSend.o: SavedSend.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SavedSend.o SavedSend.cpp
-
-${OBJECTDIR}/SendResource.o: SendResource.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/SendResource.o SendResource.cpp
-
-${OBJECTDIR}/Session.o: Session.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Session.o Session.cpp
-
-${OBJECTDIR}/StateMessage.o: StateMessage.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/StateMessage.o StateMessage.cpp
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router ${OBJECTFILES} ${LDLIBSOPTIONS} -lboost_system
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+
+${OBJECTDIR}/src/AckResource.o: src/AckResource.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AckResource.o src/AckResource.cpp
+
+${OBJECTDIR}/src/AswResource.o: src/AswResource.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AswResource.o src/AswResource.cpp
+
+${OBJECTDIR}/src/Conf.o: src/Conf.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Conf.o src/Conf.cpp
+
+${OBJECTDIR}/src/PublicApiResource.o: src/PublicApiResource.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/PublicApiResource.o src/PublicApiResource.cpp
+
+${OBJECTDIR}/src/SavedSend.o: src/SavedSend.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SavedSend.o src/SavedSend.cpp
+
+${OBJECTDIR}/src/SendResource.o: src/SendResource.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SendResource.o src/SendResource.cpp
+
+${OBJECTDIR}/src/Session.o: src/Session.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Session.o src/Session.cpp
+
+${OBJECTDIR}/src/StateMessage.o: src/StateMessage.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Wall -Iinclude -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StateMessage.o src/StateMessage.cpp
 
 # Subprojects
 .build-subprojects:
@@ -121,7 +121,7 @@ ${OBJECTDIR}/main.o: main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-routeur
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router
 
 # Subprojects
 .clean-subprojects:

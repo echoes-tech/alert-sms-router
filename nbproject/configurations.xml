@@ -5,16 +5,16 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="dbo" projectFiles="true">
-        <itemPath>SavedSend.h</itemPath>
-        <itemPath>Session.h</itemPath>
-        <itemPath>StateMessage.h</itemPath>
+        <itemPath>include/SavedSend.h</itemPath>
+        <itemPath>include/Session.h</itemPath>
+        <itemPath>include/StateMessage.h</itemPath>
       </logicalFolder>
-      <itemPath>AckResource.h</itemPath>
-      <itemPath>AswResource.h</itemPath>
-      <itemPath>Conf.h</itemPath>
-      <itemPath>Enums.h</itemPath>
-      <itemPath>PublicApiResource.h</itemPath>
-      <itemPath>SendResource.h</itemPath>
+      <itemPath>include/AckResource.h</itemPath>
+      <itemPath>include/AswResource.h</itemPath>
+      <itemPath>include/Conf.h</itemPath>
+      <itemPath>include/Enums.h</itemPath>
+      <itemPath>include/PublicApiResource.h</itemPath>
+      <itemPath>include/SendResource.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -25,16 +25,16 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f2" displayName="dbo" projectFiles="true">
-        <itemPath>SavedSend.cpp</itemPath>
-        <itemPath>Session.cpp</itemPath>
-        <itemPath>StateMessage.cpp</itemPath>
+        <itemPath>src/SavedSend.cpp</itemPath>
+        <itemPath>src/Session.cpp</itemPath>
+        <itemPath>src/StateMessage.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="src" projectFiles="true">
-        <itemPath>AckResource.cpp</itemPath>
-        <itemPath>AswResource.cpp</itemPath>
-        <itemPath>Conf.cpp</itemPath>
-        <itemPath>PublicApiResource.cpp</itemPath>
-        <itemPath>SendResource.cpp</itemPath>
+        <itemPath>src/AckResource.cpp</itemPath>
+        <itemPath>src/AswResource.cpp</itemPath>
+        <itemPath>src/Conf.cpp</itemPath>
+        <itemPath>src/PublicApiResource.cpp</itemPath>
+        <itemPath>src/SendResource.cpp</itemPath>
       </logicalFolder>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
@@ -79,41 +79,41 @@
           <commandLine>-lboost_system</commandLine>
         </linkerTool>
       </compileType>
-      <item path="AckResource.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/AckResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="AckResource.h" ex="false" tool="3" flavor2="0">
+      <item path="include/AswResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="AswResource.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/Conf.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="AswResource.h" ex="false" tool="3" flavor2="0">
+      <item path="include/Enums.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Conf.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/PublicApiResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Conf.h" ex="false" tool="3" flavor2="0">
+      <item path="include/SavedSend.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Enums.h" ex="false" tool="3" flavor2="0">
+      <item path="include/SendResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="PublicApiResource.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/Session.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="PublicApiResource.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SavedSend.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SavedSend.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SendResource.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SendResource.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Session.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Session.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="StateMessage.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="StateMessage.h" ex="false" tool="3" flavor2="0">
+      <item path="include/StateMessage.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/AckResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/AswResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Conf.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/PublicApiResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SavedSend.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SendResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Session.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/StateMessage.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="wt_config.xml" ex="false" tool="3" flavor2="0">
       </item>
@@ -138,41 +138,41 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="AckResource.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/AckResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="AckResource.h" ex="false" tool="3" flavor2="0">
+      <item path="include/AswResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="AswResource.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/Conf.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="AswResource.h" ex="false" tool="3" flavor2="0">
+      <item path="include/Enums.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Conf.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/PublicApiResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Conf.h" ex="false" tool="3" flavor2="0">
+      <item path="include/SavedSend.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="Enums.h" ex="false" tool="3" flavor2="0">
+      <item path="include/SendResource.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="PublicApiResource.cpp" ex="false" tool="1" flavor2="0">
+      <item path="include/Session.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="PublicApiResource.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SavedSend.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SavedSend.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="SendResource.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="SendResource.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="Session.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="Session.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="StateMessage.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="StateMessage.h" ex="false" tool="3" flavor2="0">
+      <item path="include/StateMessage.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/AckResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/AswResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Conf.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/PublicApiResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SavedSend.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/SendResource.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Session.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/StateMessage.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="wt_config.xml" ex="false" tool="3" flavor2="0">
       </item>

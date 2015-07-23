@@ -667,3 +667,7 @@ void PublicApiResource::handleRequest(const Wt::Http::Request &request, Wt::Http
     }*/
 }
 
+std::string PublicApiResource::generateCode()
+{
+    return (to_string((rand() * 900) + 100));
+}

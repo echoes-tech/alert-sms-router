@@ -27,6 +27,24 @@ SendResource::~SendResource()
 {
 }
 
+std::string SendResource::generateTemporaryCode()
+{
+    Wt::Dbo::ptr<SavedSend> dest;
+    bool notUnique = true;
+    string codeGenerated;
+    
+    while(notUnique)
+    {
+        codeGenerated = generateCode();
+        dest = session->find<SavedSend>().where("\"code_ref\" = ?").bind(codeGenerated).where("\"delete\" IS NULL ");
+        if(dest.operator  bool())
+        {
+            notUnique = false;
+        }
+    }
+    return codeGenerated;
+}
+
 EReturnCode SendResource::receptionSend(map<string, long long> parameters, const vector<string> &pathElements, const string &sRequest, string &responseMsg, string ipSender)
 {   
     EReturnCode res = EReturnCode::OK;
@@ -81,6 +99,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                 savedSend->adress_sender = ipSender;
                 savedSend->port = port_back;
                 savedSend->refenvoi = "";
+                savedSend->code_ref = generateTemporaryCode();
                 //enregistrement du message
                 Wt::Dbo::ptr<SavedSend> savedSendPtr = session->add<SavedSend>(savedSend);
 
@@ -114,7 +133,9 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                     try
                     {
                         Wt::Http::Client *client = new Wt::Http::Client();
-
+                        message += "code: ";
+                        message += savedSendPtr->code_ref;
+                        
                         client->done().connect(boost::bind(&SendResource::handleHttpResponse, this, _1, _2, savedSendPtr));
                         string url = "http";
                         if (conf.isSmsHttps())
@@ -191,7 +212,7 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
     string url = "http";
             url += "://" + Wt::Utils::urlEncode(savedSendPtr->adress_sender) +
                     ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(savedSendPtr->port)) + 
-                  "/itooki/ack";
+                  "/itooki/sended";
     string json = "{";
     if (!err && response.status() == 200)
     {
@@ -199,12 +220,15 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
         if(response.body().length() > 3)
         {
             json += "\"sended\" : \"true\",";
+            json += "\"refenvoiToChange\" : \"" + savedSendPtr->refenvoi + "\",";
+            savedSendPtr.modify()->refenvoi = response.body(); 
             json += "\"refenvoi\" : \"" + savedSendPtr->refenvoi + "\",";
-            savedSendPtr.modify()->refenvoi = response.body();       
+                  
         }
         else
         {
             json += "\"sended\" : \"false\",";
+            json += "\"refenvoiToChange\" : \"none\",";
             json += "\"refenvoi\" : \"none\",";
         }
         json += "\"error\" : \"" + itookiErrorToString(response.body()) + "\"";
@@ -213,6 +237,7 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
     {
         json += "\"sended\" : \"false\",";
         json += "\"refenvoi\" : \"none\",";
+        json += "\"refenvoiToChange\" : \"none\",";
         json += "\"error\" : \"send failed\"";
     }
     json += "}";
@@ -248,4 +273,62 @@ EReturnCode SendResource::processPostRequest(const Wt::Http::Request &request, s
     return res;
 }
 
+EReturnCode SendResource::deleteMessage(std::map<std::string, long long> parameters, const std::vector<std::string> &pathElements, const std::string &sRequest, std::string &responseMsg)
+{
+    EReturnCode res = EReturnCode::INTERNAL_SERVER_ERROR;
+    
+    dbo::Transaction transaction(*session);
+    
+    
+    Wt::Dbo::ptr<SavedSend> ptrMessage = session->find<SavedSend>().where("\"refenvoi\" = ?").bind(pathElements[1]);
+
+    if(ptrMessage)
+    {
+        ptrMessage.remove();
+        res = EReturnCode::NO_CONTENT;
+    }
+    else
+    {
+        res = EReturnCode::NOT_FOUND;
+        responseMsg = httpCodeToJSON(res, ptrMessage);
+    }
+
+        transaction.commit();
+    return res;
+}
+ 
+
+EReturnCode SendResource::processDeleteRequest(const Wt::Http::Request &request, std::string &responseMsg)
+{
+    EReturnCode res = EReturnCode::INTERNAL_SERVER_ERROR;
+    string nextElement = "";
+    unsigned short indexPathElement = 1;
+    vector<string> pathElements;
+    map<string, long long> parameters;
+    
+    const string sRequest = processRequestParameters(request, pathElements, parameters);
+
+    nextElement = getNextElementFromPath(indexPathElement, pathElements);
+
+    if (nextElement.empty())
+    {
+        res = EReturnCode::BAD_REQUEST;
+        responseMsg = "chemin incorrect";
+    }
+    else
+    {
+        nextElement = getNextElementFromPath(indexPathElement, pathElements);
+        if (nextElement.empty())
+        {
+            res = deleteMessage(parameters, pathElements, sRequest, responseMsg);
+        }
+        else
+        {
+            res = EReturnCode::BAD_REQUEST;
+            responseMsg = "chemin incorrect";
+        }
+    }
+
+    return res;
+}
 

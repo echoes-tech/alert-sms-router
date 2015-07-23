@@ -23,6 +23,10 @@ class SendResource : public PublicApiResource
         EReturnCode receptionSend(std::map<std::string, long long> parameters, const std::vector<std::string> &pathElements, const std::string &sRequest, std::string &responseMsg, std::string ipSender);       
         virtual EReturnCode processPostRequest(const Wt::Http::Request &request, std::string &responseMsg);
         
+        EReturnCode deleteMessage(std::map<std::string, long long> parameters, const std::vector<std::string> &pathElements, const std::string &sRequest, std::string &responseMsg);
+        virtual EReturnCode processDeleteRequest(const Wt::Http::Request &request, std::string &responseMsg);
+        
+        std::string generateTemporaryCode();
 };
 
 #endif	/* SENDRESOURCE_H */

@@ -25,6 +25,7 @@ public:
     int         port;
     std::string number;
     std::string refenvoi;
+    std::string code_ref;
     
 
     template<class Action>
@@ -34,6 +35,7 @@ public:
       dbo::field(a, port,          "port");
       dbo::field(a, number,        "number");
       dbo::field(a, refenvoi,        "refenvoi");
+      dbo::field(a, code_ref,        "code_ref");
     }
     
 private:

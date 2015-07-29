@@ -32,12 +32,14 @@ public:
         Sended = 4,
         Received = 5,
         AckFailed = 6,
-        Answered = 7
+        Answered = 7,
+        Deleted = 8
     };
     
     StateList state;
     Wt::WDateTime date_event;
     Wt::Dbo::ptr<SavedSend> id_message;
+   
     
     template<class Action>
     void persist(Action& a)
@@ -45,6 +47,7 @@ public:
       dbo::field(a, state,          "state");
       dbo::field(a, date_event,    "date_event");
       dbo::belongsTo(a, id_message,     "id_message");
+
     }
     
 private:

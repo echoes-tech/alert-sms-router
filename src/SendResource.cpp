@@ -37,7 +37,11 @@ std::string SendResource::generateTemporaryCode()
     {
         codeGenerated = generateCode();
         dest = session->find<SavedSend>().where("\"code_ref\" = ?").bind(codeGenerated).where("\"delete\" IS NULL ");
-        if(dest.operator  bool())
+        if(dest)
+        {
+            notUnique = true;
+        }
+        else
         {
             notUnique = false;
         }
@@ -171,7 +175,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                             //création de l'état envoi echoué
                             StateMessage *stateMessage2 = new StateMessage();
                             stateMessage2->id_message = savedSendPtr;
-                            stateMessage2->date_event = Wt::WDateTime::currentDateTime();;
+                            stateMessage2->date_event = Wt::WDateTime::currentDateTime();
                             stateMessage2->state = StateMessage::StateList::SendFailed;
                             
                             Wt::Dbo::ptr<StateMessage> stateMessageSendedPtr = session->add<StateMessage>(stateMessage2);
@@ -284,7 +288,15 @@ EReturnCode SendResource::deleteMessage(std::map<std::string, long long> paramet
 
     if(ptrMessage)
     {
-        ptrMessage.remove();
+        StateMessage *stateMessage = new StateMessage();
+        stateMessage->id_message = ptrMessage;
+        stateMessage->date_event = Wt::WDateTime::currentDateTime();
+        stateMessage->state = StateMessage::StateList::Deleted;
+        
+        Wt::Dbo::ptr<StateMessage> stateMessageSendedPtr = session->add<StateMessage>(stateMessage);
+        
+        ptrMessage.modify()->deleteTag = Wt::WDateTime::currentDateTime();
+        
         res = EReturnCode::NO_CONTENT;
     }
     else
@@ -292,8 +304,7 @@ EReturnCode SendResource::deleteMessage(std::map<std::string, long long> paramet
         res = EReturnCode::NOT_FOUND;
         responseMsg = httpCodeToJSON(res, ptrMessage);
     }
-
-        transaction.commit();
+    transaction.commit();
     return res;
 }
  

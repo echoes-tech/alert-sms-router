@@ -35,7 +35,7 @@ EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vect
     
     Wt::Dbo::ptr<SavedSend> ptrMessage = session->find<SavedSend>().where("\"code_ref\" = ?").bind(parameters["message"].substr(0,3));
     
-    if(ptrMessage.operator  bool())
+    if(ptrMessage)
     {
         //création de l'état asw
         StateMessage *stateMessage = new StateMessage();

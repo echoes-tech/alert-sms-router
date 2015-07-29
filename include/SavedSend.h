@@ -26,7 +26,7 @@ public:
     std::string number;
     std::string refenvoi;
     std::string code_ref;
-    
+     Wt::WDateTime deleteTag;
 
     template<class Action>
     void persist(Action& a)
@@ -36,6 +36,7 @@ public:
       dbo::field(a, number,        "number");
       dbo::field(a, refenvoi,        "refenvoi");
       dbo::field(a, code_ref,        "code_ref");
+      dbo::field(a, deleteTag,          "delete");
     }
     
 private:

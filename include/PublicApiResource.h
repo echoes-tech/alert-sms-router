@@ -36,6 +36,9 @@
 #include <Wt/WRandom>
 #include <Wt/WResource>
 #include <Wt/WServer>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 namespace boost
 {

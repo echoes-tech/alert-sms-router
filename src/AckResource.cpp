@@ -36,10 +36,11 @@ EReturnCode AckResource::receptionAck(map<string, string> parameters, const vect
     
     dbo::Transaction transaction(*session);
     
-    //on recupere le code d'erreur d'envoi. Si celui çi est egal à 80
+    //on recupere le code d'erreur d'envoi. Si celui çi est egal à 0
     //le message a bien ete envoye
+    //(104 => expiré, 107 => ne peut pas recevoir, 115 => num invalide)
     string sended;
-    if(parameters["erreur"] == "80")
+    if(parameters["erreur"] == "0")
     {
         sended = "true";
     }

@@ -669,5 +669,7 @@ void PublicApiResource::handleRequest(const Wt::Http::Request &request, Wt::Http
 
 std::string PublicApiResource::generateCode()
 {
-    return (to_string((rand() * 900) + 100));
+    srand(time(NULL));
+    int random = ((rand() % 900) + 100);
+    return (boost::lexical_cast<std::string>(random));
 }

@@ -137,8 +137,9 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                     try
                     {
                         Wt::Http::Client *client = new Wt::Http::Client();
-                        message += "code: ";
-                        message += savedSendPtr->code_ref;
+                        Wt::WString msgTmp = message;
+                        message = ("code: " + savedSendPtr->code_ref + "***");
+                        message += msgTmp;
                         
                         client->done().connect(boost::bind(&SendResource::handleHttpResponse, this, _1, _2, savedSendPtr));
                         string url = "http";
@@ -151,7 +152,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                                 "&pass=" + Wt::Utils::urlEncode(conf.getSmsPassword()) +
                                 "&numero=" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(number)) +
                                 "&message=" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(message)) + 
-                                "&refaccus=o&test=o";
+                                "&refenvoi=o";
 
                         Wt::log("info") << "[Itooki SMS Sender] Trying to send request to Itooki API";
                         Wt::log("debug") << "[Itooki SMS Sender] Address : " << url;
@@ -166,9 +167,9 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                             
                             Wt::Dbo::ptr<StateMessage> stateMessageSendedPtr = session->add<StateMessage>(stateMessage2);
                             
-                            res = EReturnCode::CREATED;
+                            res = EReturnCode::OK;
                             const string err = "[Send Resource] Message sended";
-                            responseMsg = httpCodeToJSON(res, err);
+                            responseMsg = ("{ \"ok\" : true, \"ref\" : \" " + savedSendPtr->code_ref +"\" }");
                         } 
                         else 
                         {
@@ -192,6 +193,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                             Wt::log("error") << "[Itooki SMS Sender] " << e.what();
                         }
                 }
+                transaction.commit();
             }
             catch (Wt::Dbo::Exception const& e)
             {
@@ -210,6 +212,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
 
 void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::Http::Message& response, Wt::Dbo::ptr<SavedSend> savedSendPtr)
 {
+    dbo::Transaction transaction(*session);
     //preparation de la reponse
     Wt::Http::Client *client = new Wt::Http::Client();
     
@@ -223,15 +226,15 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
         //si on a pas de code d'erreur
         if(response.body().length() > 3)
         {
-            json += "\"sended\" : \"true\",";
-            json += "\"refenvoiToChange\" : \"" + savedSendPtr->refenvoi + "\",";
             savedSendPtr.modify()->refenvoi = response.body(); 
+            json += "\"sended\" : true,";
+            json += "\"refenvoiToChange\" : \"" + savedSendPtr->code_ref + "\",";            
             json += "\"refenvoi\" : \"" + savedSendPtr->refenvoi + "\",";
                   
         }
         else
         {
-            json += "\"sended\" : \"false\",";
+            json += "\"sended\" : false,";
             json += "\"refenvoiToChange\" : \"none\",";
             json += "\"refenvoi\" : \"none\",";
         }
@@ -239,16 +242,20 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
     }
     else
     {
-        json += "\"sended\" : \"false\",";
+        json += "\"sended\" : false,";
         json += "\"refenvoi\" : \"none\",";
         json += "\"refenvoiToChange\" : \"none\",";
         json += "\"error\" : \"send failed\"";
     }
     json += "}";
+    
+    Wt::log("info") << "[Itooki SMS Sender] Trying to send request to  API : " << url << " with JSON : " << json;
+    
     Wt::Http::Message httpMessage;
     httpMessage.addBodyText(json);
     
     client->post(url, httpMessage);
+    transaction.commit();
 }
 
 EReturnCode SendResource::processPostRequest(const Wt::Http::Request &request, std::string &responseMsg)

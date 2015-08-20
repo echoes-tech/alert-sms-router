@@ -56,7 +56,7 @@ EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vect
             
         string json = "{";
         json += "\"refenvoi\" : \"" + ptrMessage->refenvoi + "\",";
-        json += "\"message\" : \"" + parameters["message"] + "\"";
+        json += "\"message\" : \"" + parameters["message"].erase(0,4) + "\"";
         json += "}";
             
         Wt::Http::Message httpMessage;

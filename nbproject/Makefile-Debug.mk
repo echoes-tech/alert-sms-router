@@ -68,7 +68,7 @@ LDLIBSOPTIONS=-lboost_program_options -lwt -lwthttp -lwtdbo -lwtdbosqlite3 -lwtd
 
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router ${OBJECTFILES} ${LDLIBSOPTIONS} -lboost_system
+	g++ -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router ${OBJECTFILES} ${LDLIBSOPTIONS} -lboost_system
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}

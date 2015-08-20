@@ -68,6 +68,7 @@
           <warningLevel>2</warningLevel>
         </ccTool>
         <linkerTool>
+          <commandlineTool>g++</commandlineTool>
           <linkerLibItems>
             <linkerLibLibItem>boost_program_options</linkerLibLibItem>
             <linkerLibLibItem>wt</linkerLibLibItem>
@@ -140,6 +141,17 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibLibItem>wtdbosqlite3</linkerLibLibItem>
+            <linkerLibLibItem>wtdbo</linkerLibLibItem>
+            <linkerLibLibItem>wthttp</linkerLibLibItem>
+            <linkerLibLibItem>wt</linkerLibLibItem>
+            <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
+            <linkerLibLibItem>boost_program_options</linkerLibLibItem>
+          </linkerLibItems>
+          <commandLine>-lboost_system</commandLine>
+        </linkerTool>
       </compileType>
       <item path="include/AckResource.h" ex="false" tool="3" flavor2="0">
       </item>

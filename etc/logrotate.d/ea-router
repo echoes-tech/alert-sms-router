@@ -1,0 +1,13 @@
+/var/log/echoes-alert/router_access.log {
+        weekly
+        missingok
+        rotate 52
+        compress
+        delaycompress
+        notifempty
+        create 640 root adm
+        sharedscripts
+        postrotate
+                /etc/init.d/ea-router restart > /dev/null
+        endscript
+}

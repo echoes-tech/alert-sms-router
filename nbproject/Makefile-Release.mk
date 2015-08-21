@@ -60,7 +60,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-L/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/default/dist/Release_SharedObject/GNU-Linux-x86 -L../dbo/dist/Release_SharedObject/GNU-Linux-x86 -lwt -lwthttp -lwtdbo -lwtdbopostgres -lboost_program_options -lboost_signals
+LDLIBSOPTIONS=-L/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/default/dist/Release_SharedObject/GNU-Linux-x86 -lwt -lwthttp -lwtdbo -lwtdbopostgres -lboost_program_options -lboost_signals
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

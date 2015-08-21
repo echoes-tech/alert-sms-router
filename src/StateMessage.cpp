@@ -8,9 +8,13 @@
 #include "StateMessage.h"
 
 StateMessage::StateMessage() {
+    state = 0;
 }
 
 StateMessage::StateMessage(const StateMessage& orig) {
+    state = orig.state;
+    date_event = orig.date_event;
+    id_message = orig.id_message;
 }
 
 StateMessage::~StateMessage() {

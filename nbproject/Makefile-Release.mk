@@ -60,7 +60,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-ldbo -lwt -lwthttp -lwtdbo -lwtdbosqlite3 -lwtdbopostgres -lboost_program_options
+LDLIBSOPTIONS=-L/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/default/dist/Release_SharedObject/GNU-Linux-x86 -L../dbo/dist/Release_SharedObject/GNU-Linux-x86 -ldbo -lwt -lwthttp -lwtdbo -lwtdbosqlite3 -lwtdbopostgres -lboost_program_options
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -73,47 +73,47 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/sms-router: ${OBJECTFILES}
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 ${OBJECTDIR}/src/AckResource.o: src/AckResource.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AckResource.o src/AckResource.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AckResource.o src/AckResource.cpp
 
 ${OBJECTDIR}/src/AswResource.o: src/AswResource.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AswResource.o src/AswResource.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/AswResource.o src/AswResource.cpp
 
 ${OBJECTDIR}/src/Conf.o: src/Conf.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Conf.o src/Conf.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Conf.o src/Conf.cpp
 
 ${OBJECTDIR}/src/PublicApiResource.o: src/PublicApiResource.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/PublicApiResource.o src/PublicApiResource.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/PublicApiResource.o src/PublicApiResource.cpp
 
 ${OBJECTDIR}/src/SavedSend.o: src/SavedSend.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SavedSend.o src/SavedSend.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SavedSend.o src/SavedSend.cpp
 
 ${OBJECTDIR}/src/SendResource.o: src/SendResource.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SendResource.o src/SendResource.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/SendResource.o src/SendResource.cpp
 
 ${OBJECTDIR}/src/Session.o: src/Session.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Session.o src/Session.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Session.o src/Session.cpp
 
 ${OBJECTDIR}/src/StateMessage.o: src/StateMessage.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Iinclude -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StateMessage.o src/StateMessage.cpp
+	$(COMPILE.cc) -O2 -Iinclude -I../dbo/include -I/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/StateMessage.o src/StateMessage.cpp
 
 # Subprojects
 .build-subprojects:

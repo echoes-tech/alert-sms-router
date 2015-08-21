@@ -60,7 +60,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lboost_program_options -lwt -lwthttp -lwtdbo -lwtdbosqlite3 -lwtdbopostgres
+LDLIBSOPTIONS=-ldbo -lwt -lwthttp -lwtdbo -lwtdbosqlite3 -lwtdbopostgres -lboost_program_options
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

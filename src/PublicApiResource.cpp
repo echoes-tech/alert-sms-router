@@ -138,6 +138,7 @@ using namespace std;
 
 PublicApiResource::PublicApiResource() : Wt::WResource()
 {
+    session = NULL;
 }
 
 PublicApiResource::PublicApiResource(Session* sess) : Wt::WResource(), session(sess)

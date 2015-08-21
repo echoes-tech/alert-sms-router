@@ -55,7 +55,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
     
     Wt::WString number = "missing";
     Wt::WString message = "missing";
-    int port_back = -1;
+    int port_back = 0;
     bool isValid = false;
     
     responseMsg = "send recu";

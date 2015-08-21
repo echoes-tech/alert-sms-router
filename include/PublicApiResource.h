@@ -82,8 +82,6 @@ public:
     
 protected:
     Session* session;
-
-    //static std::string file2base64(const std::string &path);
     
     unsigned short retrieveCurrentHttpMethod(const std::string &method) const;
     std::string getNextElementFromPath(unsigned short &indexPathElement, std::vector<std::string> &pathElements);
@@ -101,72 +99,6 @@ protected:
 
     std::string generateCode();
     
-   /* // a priori, useless
-    template<class C>
-    EReturnCode serialize(C &obj, std::string &responseMsg, EReturnCode successRes = EReturnCode::INTERNAL_SERVER_ERROR)
-    {
-        responseMsg = httpCodeToJSON(successRes,obj);
-        return successRes;
-    }
-    template<class C>
-    EReturnCode serialize(Wt::Dbo::ptr<C> &obj, std::string &responseMsg, EReturnCode successRes = EReturnCode::OK)
-    {
-        EReturnCode res = EReturnCode::INTERNAL_SERVER_ERROR;
-        if(obj)
-        {
-            responseMsg += serializeToJSON(obj);
-            res = successRes;
-        }
-        else
-        {
-            res = EReturnCode::NOT_FOUND;
-            responseMsg = httpCodeToJSON(res,obj);
-        }
-        return res;
-    }
-    template<class C>
-    EReturnCode serialize(Wt::Dbo::collection<Wt::Dbo::ptr<C>> &obj, std::string &responseMsg, EReturnCode successRes = EReturnCode::OK)
-    {
-        EReturnCode res = EReturnCode::INTERNAL_SERVER_ERROR;
-        if(obj.size() > 0)
-        {
-            responseMsg += serializeToJSON(obj);
-            res = successRes;
-        }
-        else
-        {
-            res = EReturnCode::NOT_FOUND;
-            responseMsg = httpCodeToJSON(res,obj);
-        }
-        return res;
-    }
-
-    template<class C>
-    std::string serializeToJSON(C &obj) {
-        std::string responseMsg;
-        Wt::Dbo::JsonSerializer jsonSerializer(m_session);
-        jsonSerializer.serialize(obj);
-        responseMsg = jsonSerializer.getResult();
-        return responseMsg;
-    }
-
-    template<class C>
-    std::string getTableName(C const &obj)
-    {
-        std::cout << "obj is: " << typeid(C).name() << '\n';
-        return "";
-    }
-    template<class C>
-    std::string getTableName(Wt::Dbo::ptr<C> const &ptr)
-    {
-        return Wt::Dbo::JsonSerializer::transformTableName(m_session.tableName<C>());
-    }
-    template<class C>
-    std::string getTableName(Wt::Dbo::collection<Wt::Dbo::ptr<C>> const &ptrCol)
-    {
-        return Wt::Dbo::JsonSerializer::transformTableName(m_session.tableName<C>());
-    }
-*/
     template<class C>
     std::string httpCodeToJSON(EReturnCode code, C &obj) {
         std::string message;

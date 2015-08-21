@@ -156,6 +156,7 @@
             <linkerLibLibItem>wtdbo</linkerLibLibItem>
             <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
             <linkerLibLibItem>boost_program_options</linkerLibLibItem>
+            <linkerLibLibItem>boost_signals</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>-lboost_system</commandLine>
         </linkerTool>

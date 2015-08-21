@@ -134,7 +134,6 @@
           <standard>8</standard>
           <incDir>
             <pElem>include</pElem>
-            <pElem>../dbo/include</pElem>
             <pElem>/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include</pElem>
           </incDir>
         </ccTool>

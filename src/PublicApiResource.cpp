@@ -170,7 +170,6 @@ unsigned short PublicApiResource::retrieveCurrentHttpMethod(const string &method
     {
         res = Wt::Http::Delete;
     }
-
     return res;
 }
 

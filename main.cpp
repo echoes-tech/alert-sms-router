@@ -32,9 +32,6 @@ int main(int argc, char** argv)
         
         if (conf.readProperties(server))
         {
-            /*Wt::Dbo::backend::Sqlite3 sqlite3("test.db");
-            sqlite3.setProperty("show-queries", "true");
-            sqlite3.setDateTimeStorage(Wt::Dbo::SqlDateTimeType::SqlDateTime, Wt::Dbo::backend::Sqlite3::DateTimeStorage::ISO8601AsText);*/
             Session session(conf.getSessConnectParams());
             
             AckResource     ackResource(&session);

@@ -143,12 +143,13 @@
         </asmTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibLibItem>boost_program_options</linkerLibLibItem>
+            <linkerLibLibItem>dbo</linkerLibLibItem>
             <linkerLibLibItem>wt</linkerLibLibItem>
             <linkerLibLibItem>wthttp</linkerLibLibItem>
             <linkerLibLibItem>wtdbo</linkerLibLibItem>
             <linkerLibLibItem>wtdbosqlite3</linkerLibLibItem>
             <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
+            <linkerLibLibItem>boost_program_options</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>-lboost_system</commandLine>
         </linkerTool>

@@ -151,7 +151,6 @@
           </linkerAddLib>
           <stripSymbols>true</stripSymbols>
           <linkerLibItems>
-            <linkerLibLibItem>dbo</linkerLibLibItem>
             <linkerLibLibItem>wt</linkerLibLibItem>
             <linkerLibLibItem>wthttp</linkerLibLibItem>
             <linkerLibLibItem>wtdbo</linkerLibLibItem>

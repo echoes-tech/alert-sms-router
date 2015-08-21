@@ -133,6 +133,8 @@
           <developmentMode>5</developmentMode>
           <incDir>
             <pElem>include</pElem>
+            <pElem>../dbo/include</pElem>
+            <pElem>/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/include</pElem>
           </incDir>
         </ccTool>
         <fortranCompilerTool>
@@ -142,6 +144,10 @@
           <developmentMode>5</developmentMode>
         </asmTool>
         <linkerTool>
+          <linkerAddLib>
+            <pElem>/var/lib/jenkins/jobs/ea-dbo-${target}/workspace/default/dist/Release_SharedObject/GNU-Linux-x86</pElem>
+            <pElem>../dbo/dist/Release_SharedObject/GNU-Linux-x86</pElem>
+          </linkerAddLib>
           <linkerLibItems>
             <linkerLibLibItem>dbo</linkerLibLibItem>
             <linkerLibLibItem>wt</linkerLibLibItem>

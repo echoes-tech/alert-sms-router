@@ -8,7 +8,7 @@
 #include "StateMessage.h"
 
 StateMessage::StateMessage() {
-    state = 0;
+    state = NULL;
 }
 
 StateMessage::StateMessage(const StateMessage& orig) {

@@ -10,7 +10,6 @@
 
 #include <Wt/WDateTime>
 #include <Wt/Dbo/Dbo>
-#include <Wt/Dbo/backend/Sqlite3>
 #include <string>
 
 namespace dbo = Wt::Dbo;

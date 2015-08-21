@@ -53,14 +53,14 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
 {   
     EReturnCode res = EReturnCode::OK;
     
-    Wt::WString number = "missing";
-    Wt::WString message = "missing";
-    int port_back = 0;
-    bool isValid = false;
-    
     responseMsg = "send recu";
     if (!sRequest.empty())
         {
+            int port_back = 0;
+            Wt::WString number = "missing";
+            Wt::WString message = "missing";
+            bool isValid = false;
+            
             try
             {
                 Wt::Json::Object result;

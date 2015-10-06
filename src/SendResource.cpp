@@ -169,7 +169,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                             
                             res = EReturnCode::OK;
                             const string err = "[Send Resource] Message sended";
-                            responseMsg = ("{ \"ok\" : true, \"ref\" : \" " + savedSendPtr->code_ref +"\" }");
+                            responseMsg = ("{ \"ok\" : true, \"ref\" : \"" + savedSendPtr->code_ref +"\" }");
                         } 
                         else 
                         {

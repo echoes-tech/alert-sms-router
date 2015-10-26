@@ -17,10 +17,8 @@
 #include <unistd.h>
 
 #include <boost/algorithm/string.hpp>
-//#include <boost/exception/detail/exception_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
-//#include <boost/thread/recursive_mutex.hpp>
 
 #include <Wt/Http/Client>
 #include <Wt/Http/Request>
@@ -63,16 +61,19 @@ namespace boost
    
   }
 }
-/*
-#include <tools/Session.h>
-#include <tools/MainIncludeFile.h>
-#include <tools/Enums.h>
 
-#include "JsonSerializer.h"*/
 #include "Enums.h"
 #include "Conf.h"
 #include "Session.h"
-//#include "Utils.h"
+#include <yaml-cpp/yaml.h>
+#include <boost/regex.hpp>
+
+struct Call {
+    std::string method;
+    boost::regex path;
+    std::vector<std::string> parameters;
+    boost::function<EReturnCode (std::string &, const std::vector<std::string> &, const std::string &, std::map<std::string, std::string>)> function;
+};
 
 class PublicApiResource : public Wt::WResource {
 public:
@@ -82,19 +83,25 @@ public:
     
 protected:
     Session* session;
+    std::vector<Call> calls;
+    std::map<std::string, boost::function<EReturnCode (std::string &, const std::vector<std::string> &, const std::string &, std::map<std::string, std::string>)>> functionMap;
+    std::string resourceClassName = "unsetClassName";
+
+    EReturnCode Error       (std::string &responseMsg, const std::vector<std::string> &pathElements = std::vector<std::string>(), const std::string &sRequest = "", std::map<std::string, std::string> parameters = std::map<std::string, std::string>());
     
     unsigned short retrieveCurrentHttpMethod(const std::string &method) const;
     std::string getNextElementFromPath(unsigned short &indexPathElement, std::vector<std::string> &pathElements);
     std::string request2string(const Wt::Http::Request &request);
+    std::vector<Call> FillCallsVector();
 
     std::string itookiErrorToString(std::string error);
-    std::string processRequestParameters(const Wt::Http::Request &request, std::vector<std::string> &pathElements, std::map<std::string, long long> &parameters);
     std::string processRequestParameters(const Wt::Http::Request &request, std::vector<std::string> &pathElements, std::map<std::string, std::string> &parameters);
     virtual EReturnCode processGetRequest(const Wt::Http::Request &request, std::string &responseMsg);
     virtual EReturnCode processPostRequest(const Wt::Http::Request &request, std::string &responseMsg);
     virtual EReturnCode processPutRequest(const Wt::Http::Request &request, std::string &responseMsg);
     virtual EReturnCode processDeleteRequest(const Wt::Http::Request &request, std::string &responseMsg);
-
+    EReturnCode processRequest(const Wt::Http::Request &request, std::string &responseMsg);
+    
     virtual void handleRequest(const Wt::Http::Request &request, Wt::Http::Response &response);
 
     std::string generateCode();

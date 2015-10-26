@@ -18,7 +18,7 @@ class AswResource : public PublicApiResource
         virtual ~AswResource();
 
     protected :
-        EReturnCode receptionAsw(std::map<std::string, std::string> parameters, const std::vector<std::string> &pathElements, const std::string &sRequest, std::string &responseMsg);
+        EReturnCode receptionAsw(std::string &responseMsg, const std::vector<std::string> &pathElements = std::vector<std::string>(), const std::string &sRequest = "", std::map<std::string, std::string> parameters = std::map<std::string, std::string>());
         virtual EReturnCode processGetRequest(const Wt::Http::Request &request, std::string &responseMsg);
 };
 

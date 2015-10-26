@@ -17,10 +17,22 @@ using namespace std;
 
 SendResource::SendResource() : PublicApiResource::PublicApiResource()
 {
+    resourceClassName = "SendResource";
+    
+    functionMap["receptionSend"] = boost::bind(&SendResource::receptionSend, this, _1, _2, _3, _4);
+    functionMap["deleteMessage"] = boost::bind(&SendResource::deleteMessage, this, _1, _2, _3, _4);
+    
+    calls = FillCallsVector();
 }
 
 SendResource::SendResource(Session* session) : PublicApiResource::PublicApiResource(session)
 {
+    resourceClassName = "SendResource";
+    
+    functionMap["receptionSend"] = boost::bind(&SendResource::receptionSend, this, _1, _2, _3, _4);
+    functionMap["deleteMessage"] = boost::bind(&SendResource::deleteMessage, this, _1, _2, _3, _4);
+    
+    calls = FillCallsVector();
 }
 
 SendResource::~SendResource()
@@ -49,7 +61,7 @@ std::string SendResource::generateTemporaryCode()
     return codeGenerated;
 }
 
-EReturnCode SendResource::receptionSend(map<string, long long> parameters, const vector<string> &pathElements, const string &sRequest, string &responseMsg, string ipSender)
+EReturnCode SendResource::receptionSend(std::string &responseMsg, const std::vector<std::string> &pathElements, const std::string &sRequest, std::map<std::string, std::string> parameters)
 {   
     EReturnCode res = EReturnCode::OK;
     
@@ -100,7 +112,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                 //création du message
                 SavedSend *savedSend = new SavedSend();
                 savedSend->number = boost::lexical_cast<std::string>(number);                
-                savedSend->adress_sender = ipSender;
+                savedSend->adress_sender = parameters["ipSender"];
                 savedSend->port = port_back;
                 savedSend->refenvoi = "";
                 savedSend->code_ref = generateTemporaryCode();
@@ -264,8 +276,8 @@ EReturnCode SendResource::processPostRequest(const Wt::Http::Request &request, s
     string nextElement = "";
     unsigned short indexPathElement = 1;
     vector<string> pathElements;
-    map<string, long long> parameters;
-    string ipSender = request.clientAddress();
+    map<string, string> parameters;
+    parameters["ipSender"] = request.clientAddress();
     
     const string sRequest = processRequestParameters(request, pathElements, parameters);
 
@@ -273,7 +285,7 @@ EReturnCode SendResource::processPostRequest(const Wt::Http::Request &request, s
 
     if (nextElement.empty())
     {
-        res = receptionSend(parameters, pathElements, sRequest, responseMsg, ipSender);
+        res = receptionSend(responseMsg, pathElements, sRequest, parameters);
     }
     else
     {
@@ -284,7 +296,7 @@ EReturnCode SendResource::processPostRequest(const Wt::Http::Request &request, s
     return res;
 }
 
-EReturnCode SendResource::deleteMessage(std::map<std::string, long long> parameters, const std::vector<std::string> &pathElements, const std::string &sRequest, std::string &responseMsg)
+EReturnCode SendResource::deleteMessage(std::string &responseMsg, const std::vector<std::string> &pathElements, const std::string &sRequest, std::map<std::string, std::string> parameters)
 {
     EReturnCode res = EReturnCode::INTERNAL_SERVER_ERROR;
     
@@ -322,7 +334,7 @@ EReturnCode SendResource::processDeleteRequest(const Wt::Http::Request &request,
     string nextElement = "";
     unsigned short indexPathElement = 1;
     vector<string> pathElements;
-    map<string, long long> parameters;
+    map<string, string> parameters;
     
     const string sRequest = processRequestParameters(request, pathElements, parameters);
 
@@ -338,7 +350,7 @@ EReturnCode SendResource::processDeleteRequest(const Wt::Http::Request &request,
         nextElement = getNextElementFromPath(indexPathElement, pathElements);
         if (nextElement.empty())
         {
-            res = deleteMessage(parameters, pathElements, sRequest, responseMsg);
+            res = deleteMessage(responseMsg, pathElements, sRequest, parameters);
         }
         else
         {

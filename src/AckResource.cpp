@@ -19,10 +19,20 @@ using namespace std;
 
 AckResource::AckResource() : PublicApiResource::PublicApiResource()
 {
+    resourceClassName = "AckResource";
+    
+    functionMap["receptionAck"] = boost::bind(&AckResource::receptionAck, this, _1, _2, _3, _4);
+    
+    calls = FillCallsVector();
 }
 
 AckResource::AckResource(Session* session) : PublicApiResource::PublicApiResource(session)
 {
+    resourceClassName = "AckResource";
+    
+    functionMap["receptionAck"] = boost::bind(&AckResource::receptionAck, this, _1, _2, _3, _4);
+    
+    calls = FillCallsVector();
 }
 
 
@@ -30,7 +40,7 @@ AckResource::~AckResource()
 {
 }
 
-EReturnCode AckResource::receptionAck(map<string, string> parameters, const vector<string> &pathElements, const string &sRequest, string &responseMsg)
+EReturnCode AckResource::receptionAck(std::string &responseMsg, const std::vector<std::string> &pathElements, const std::string &sRequest, std::map<std::string, std::string> parameters)
 {
     EReturnCode res = EReturnCode::OK;
     
@@ -49,50 +59,60 @@ EReturnCode AckResource::receptionAck(map<string, string> parameters, const vect
         sended = "false";
     }
     
-    Wt::Dbo::ptr<SavedSend> dest = session->find<SavedSend>().where("\"refenvoi\" = ?").bind(parameters["refenvoi"]);
-    if(dest)
+    if(parameters["refenvoi"] != "")
     {
-        //création de l'état ack
-        StateMessage *stateMessage = new StateMessage();
-        stateMessage->id_message = dest;
-        stateMessage->date_event = Wt::WDateTime::currentDateTime();
-        if(sended == "true")
+        Wt::Dbo::ptr<SavedSend> dest = session->find<SavedSend>().where("\"refenvoi\" = ?").bind(parameters["refenvoi"]);
+        if(dest)
         {
-            stateMessage->state = StateMessage::StateList::Received;
+            //création de l'état ack
+            StateMessage *stateMessage = new StateMessage();
+            stateMessage->id_message = dest;
+            stateMessage->date_event = Wt::WDateTime::currentDateTime();
+            if(sended == "true")
+            {
+                stateMessage->state = StateMessage::StateList::Received;
+            }
+            else
+            {
+                stateMessage->state = StateMessage::StateList::AckFailed;
+            }
+
+            //enregistrement
+            Wt::Dbo::ptr<StateMessage> stateMessageRcvPtr = session->add<StateMessage>(stateMessage);
+
+            //preparation de la reponse
+            Wt::Http::Client *client = new Wt::Http::Client();
+
+            string url = "http";
+            url += "://" + Wt::Utils::urlEncode(dest->adress_sender) +
+                    ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(dest->port)) + 
+                    "/itooki/ack";
+
+            string json = "{";
+            json += "\"sended\" : \"" + sended + "\",";
+            json += "\"error\" : \"" + itookiErrorToString(parameters["erreur"]) + "\",";
+            json += "\"refenvoi\" : \"" + dest->refenvoi + "\"";
+            json += "}";
+
+            Wt::Http::Message httpMessage;
+            httpMessage.addBodyText(json);
+
+            client->post(url, httpMessage);
         }
         else
         {
-            stateMessage->state = StateMessage::StateList::AckFailed;
+            res = EReturnCode::BAD_REQUEST;
+            const string err = "[Ack Resource] No sender with this id";
+            responseMsg = httpCodeToJSON(res, err);
         }
-        
-        //enregistrement
-        Wt::Dbo::ptr<StateMessage> stateMessageRcvPtr = session->add<StateMessage>(stateMessage);
-            
-        //preparation de la reponse
-        Wt::Http::Client *client = new Wt::Http::Client();
-            
-        string url = "http";
-        url += "://" + Wt::Utils::urlEncode(dest->adress_sender) +
-                ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(dest->port)) + 
-                "/itooki/ack";
-            
-        string json = "{";
-        json += "\"sended\" : \"" + sended + "\",";
-        json += "\"error\" : \"" + itookiErrorToString(parameters["erreur"]) + "\",";
-        json += "\"refenvoi\" : \"" + dest->refenvoi + "\"";
-        json += "}";
-            
-        Wt::Http::Message httpMessage;
-        httpMessage.addBodyText(json);
-            
-        client->post(url, httpMessage);
     }
     else
     {
         res = EReturnCode::BAD_REQUEST;
-        const string err = "[Ack Resource] No sender with this id";
+        const string err = "[Ack Resource] incorect parameters";
         responseMsg = httpCodeToJSON(res, err);
     }
+    transaction.commit();
     return (res);
 }
 
@@ -115,7 +135,7 @@ EReturnCode AckResource::processGetRequest(const Wt::Http::Request &request, std
 
     if (nextElement.empty())
     {
-        res = receptionAck(parameters, pathElements, sRequest, responseMsg);
+        res = receptionAck(responseMsg, pathElements, sRequest, parameters);
     }
     else
     {

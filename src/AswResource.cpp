@@ -17,17 +17,27 @@ using namespace std;
 
 AswResource::AswResource() : PublicApiResource::PublicApiResource()
 {
+    resourceClassName = "AswResource";
+    
+    functionMap["receptionAsw"] = boost::bind(&AswResource::receptionAsw, this, _1, _2, _3, _4);
+    
+    calls = FillCallsVector();
 }
 
 AswResource::AswResource(Session* session) : PublicApiResource::PublicApiResource(session)
 {
+    resourceClassName = "AswResource";
+    
+    functionMap["receptionAsw"] = boost::bind(&AswResource::receptionAsw, this, _1, _2, _3, _4);
+    
+    calls = FillCallsVector();
 }
 
 AswResource::~AswResource()
 {
 }
 
-EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vector<string> &pathElements, const string &sRequest, string &responseMsg)
+EReturnCode AswResource::receptionAsw(std::string &responseMsg, const std::vector<std::string> &pathElements, const std::string &sRequest, std::map<std::string, std::string> parameters)
 {
     EReturnCode res = EReturnCode::OK;
     
@@ -70,7 +80,7 @@ EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vect
         const string err = "[ASW Resource] No message with this code";
         responseMsg = httpCodeToJSON(res, err);
     }
-
+    transaction.commit();
     return (res);
 }
 
@@ -91,7 +101,7 @@ EReturnCode AswResource::processGetRequest(const Wt::Http::Request &request, std
 
     if (nextElement.empty())
     {
-        res = receptionAsw(parameters, pathElements, sRequest, responseMsg);
+        res = receptionAsw(responseMsg, pathElements, sRequest, parameters);
     }
     else
     {

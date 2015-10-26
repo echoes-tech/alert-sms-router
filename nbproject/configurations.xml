@@ -19,6 +19,7 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>swagger.yaml</itemPath>
       <itemPath>wt_config.xml</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
@@ -75,6 +76,8 @@
             <linkerLibLibItem>wthttp</linkerLibLibItem>
             <linkerLibLibItem>wtdbo</linkerLibLibItem>
             <linkerLibLibItem>wtdbopostgres</linkerLibLibItem>
+            <linkerLibLibItem>yaml-cpp</linkerLibLibItem>
+            <linkerLibLibItem>boost_regex</linkerLibLibItem>
           </linkerLibItems>
           <commandLine>-lboost_system</commandLine>
         </linkerTool>
@@ -114,6 +117,8 @@
       <item path="src/Session.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StateMessage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="swagger.yaml" ex="false" tool="3" flavor2="0">
       </item>
       <item path="wt_config.xml" ex="false" tool="3" flavor2="0">
       </item>
@@ -194,6 +199,8 @@
       <item path="src/Session.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/StateMessage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="swagger.yaml" ex="false" tool="3" flavor2="0">
       </item>
       <item path="wt_config.xml" ex="false" tool="3" flavor2="0">
       </item>

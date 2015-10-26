@@ -60,7 +60,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=-lboost_program_options -lwt -lwthttp -lwtdbo -lwtdbopostgres
+LDLIBSOPTIONS=-lboost_program_options -lwt -lwthttp -lwtdbo -lwtdbopostgres -lyaml-cpp -lboost_regex
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}

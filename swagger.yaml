@@ -1,0 +1,98 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: sms-routeur API
+  description: Protocole for sms-routeur
+  version: "1.0.0"
+# the domain of the service
+host: sms-router.echoes-tech.com
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+# paths for ACK
+  /ack:
+    get:
+      summary: sommaire
+      description: blabla
+      operationId: AckResource::receptionAck
+      parameters:
+        - in: query
+          name: erreur
+          description: code d'erreur
+          required: true
+          type: string
+        - in: query
+          name: refenvoi
+          description: numéro de référence itooki
+          required: true
+          type: string
+        - in: query
+          name: numero
+          description: numéro du destinataire
+          required: true
+          type: string
+        - in: query
+          name: nb_credits
+          description: nombre de crédits restants
+          required: true
+          type: string
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: bad request
+# paths for ASW
+  /asw:
+    get:
+      summary: sommaire
+      description: blabla
+      operationId: AswResource::receptionAsw
+      parameters:
+        - in: query
+          name: message
+          description: message reçu
+          required: true
+          type: string
+        - in: query
+          name: numero
+          description: numéro de l'envoyeur
+          required: true
+          type: string
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: bad request
+# paths for SEND
+  /send:
+    post:
+      summary: sommaire
+      description: blabla
+      operationId: SendResource::receptionSend
+      responses:
+        "200":
+          description: successful operation (json content => ok (bool) pour l'état de l'envoi et ref (string) pour la référence) 
+        "400":
+          description: bad request
+  /send/{ref}:
+    delete:
+      summary: sommaire
+      description: blabla
+      operationId: SendResource::deleteMessage
+      parameters:
+        - in: path
+          name: ref
+          description: référence du message à supprimer
+          required: true
+          type: string
+      responses:
+        "204":
+          description: successful operation
+        "404":
+          description: bad request

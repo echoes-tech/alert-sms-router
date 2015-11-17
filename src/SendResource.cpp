@@ -262,7 +262,7 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
     }
     else
     {
-        string url = "http://127.0.0.1/erreur/" + savedSendPtrId;
+        string url = "http://127.0.0.1/erreur/" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(savedSendPtrId));
         client->get(url);
          Wt::log("error") << "[Itooki SMS Sender] savedSend not found";
     }

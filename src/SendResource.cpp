@@ -141,7 +141,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                         message = ("code: " + savedSendPtr->code_ref + "***");
                         message += msgTmp;
                         
-                        client->done().connect(boost::bind(&SendResource::handleHttpResponse, this, _1, _2, savedSendPtr));
+                        client->done().connect(boost::bind(&SendResource::handleHttpResponse, this, _1, _2, savedSendPtr.id()));
                         string url = "http";
                         if (conf.isSmsHttps())
                         {
@@ -210,51 +210,60 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
     return (res);
 }
 
-void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::Http::Message& response, Wt::Dbo::ptr<SavedSend> savedSendPtr)
+void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::Http::Message& response, long long savedSendPtrId)
 {
     dbo::Transaction transaction(*session);
     //preparation de la reponse
     Wt::Http::Client *client = new Wt::Http::Client();
     
-    string url = "http";
-            url += "://" + Wt::Utils::urlEncode(savedSendPtr->adress_sender) +
-                    ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(savedSendPtr->port)) + 
-                  "/itooki/sended";
-    string json = "{";
-    if (!err && response.status() == 200)
+    Wt::Dbo::ptr<SavedSend> savedSendPtr = session->find<SavedSend>().where("\"id\" = ?").bind(savedSendPtrId);
+    
+    if(savedSendPtr)
     {
-        //si on a pas de code d'erreur
-        if(response.body().length() > 3)
+        string url = "http";
+                url += "://" + Wt::Utils::urlEncode(savedSendPtr->adress_sender) +
+                        ":" + Wt::Utils::urlEncode(boost::lexical_cast<std::string>(savedSendPtr->port)) + 
+                      "/itooki/sended";
+        string json = "{";
+        if (!err && response.status() == 200)
         {
-            savedSendPtr.modify()->refenvoi = response.body(); 
-            json += "\"sended\" : true,";
-            json += "\"refenvoiToChange\" : \"" + savedSendPtr->code_ref + "\",";            
-            json += "\"refenvoi\" : \"" + savedSendPtr->refenvoi + "\",";
-                  
+            //si on a pas de code d'erreur
+            if(response.body().length() > 3)
+            {
+                savedSendPtr.modify()->refenvoi = response.body(); 
+                json += "\"sended\" : true,";
+                json += "\"refenvoiToChange\" : \"" + savedSendPtr->code_ref + "\",";            
+                json += "\"refenvoi\" : \"" + savedSendPtr->refenvoi + "\",";
+
+            }
+            else
+            {
+                json += "\"sended\" : false,";
+                json += "\"refenvoiToChange\" : \"none\",";
+                json += "\"refenvoi\" : \"none\",";
+            }
+            json += "\"error\" : \"" + itookiErrorToString(response.body()) + "\"";
         }
         else
         {
             json += "\"sended\" : false,";
-            json += "\"refenvoiToChange\" : \"none\",";
             json += "\"refenvoi\" : \"none\",";
+            json += "\"refenvoiToChange\" : \"none\",";
+            json += "\"error\" : \"send failed\"";
         }
-        json += "\"error\" : \"" + itookiErrorToString(response.body()) + "\"";
+        json += "}";
+
+        Wt::log("info") << "[Itooki SMS Sender] Trying to send request to  API : " << url << " with JSON : " << json;
+
+        Wt::Http::Message httpMessage;
+        httpMessage.addBodyText(json);
+
+        client->post(url, httpMessage);
     }
     else
     {
-        json += "\"sended\" : false,";
-        json += "\"refenvoi\" : \"none\",";
-        json += "\"refenvoiToChange\" : \"none\",";
-        json += "\"error\" : \"send failed\"";
+         Wt::log("error") << "[Itooki SMS Sender] savedSend not found";
     }
-    json += "}";
-    
-    Wt::log("info") << "[Itooki SMS Sender] Trying to send request to  API : " << url << " with JSON : " << json;
-    
-    Wt::Http::Message httpMessage;
-    httpMessage.addBodyText(json);
-    
-    client->post(url, httpMessage);
     transaction.commit();
 }
 

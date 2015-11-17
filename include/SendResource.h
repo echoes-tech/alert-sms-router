@@ -19,7 +19,7 @@ class SendResource : public PublicApiResource
         virtual ~SendResource();
         
     protected :
-        void handleHttpResponse(boost::system::error_code err, const Wt::Http::Message& response, Wt::Dbo::ptr<SavedSend> savedSendPtr);
+        void handleHttpResponse(boost::system::error_code err, const Wt::Http::Message& response,  long long savedSendPtrId);
         EReturnCode receptionSend(std::map<std::string, long long> parameters, const std::vector<std::string> &pathElements, const std::string &sRequest, std::string &responseMsg, std::string ipSender);       
         virtual EReturnCode processPostRequest(const Wt::Http::Request &request, std::string &responseMsg);
         

@@ -262,6 +262,8 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
     }
     else
     {
+        string url = "http://127.0.0.1/erreur";
+        client->get(url);
          Wt::log("error") << "[Itooki SMS Sender] savedSend not found";
     }
     transaction.commit();

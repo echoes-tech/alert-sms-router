@@ -228,7 +228,7 @@ void SendResource::handleHttpResponse(boost::system::error_code err, const Wt::H
             //si on a pas de code d'erreur
             if(response.body().length() > 3)
             {
-                savedSendPtr.modify()->refenvoi = response.body(); 
+                savedSendPtr.modify()->refenvoi = response.body().erase(0,3); 
                 json += "\"sended\" : true,";
                 json += "\"refenvoiToChange\" : \"" + savedSendPtr->code_ref + "\",";            
                 json += "\"refenvoi\" : \"" + savedSendPtr->refenvoi + "\",";

@@ -31,7 +31,7 @@ EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vect
 {
     EReturnCode res = EReturnCode::OK;
     
-    dbo::Transaction transaction(*session);
+    dbo::Transaction transaction(*session, true);
     
     Wt::Dbo::ptr<SavedSend> ptrMessage = session->find<SavedSend>().where("\"code_ref\" = ?").bind(parameters["message"].substr(0,3));
     
@@ -70,7 +70,7 @@ EReturnCode AswResource::receptionAsw(map<string, string> parameters, const vect
         const string err = "[ASW Resource] No message with this code";
         responseMsg = httpCodeToJSON(res, err);
     }
-
+    transaction.commit();
     return (res);
 }
 

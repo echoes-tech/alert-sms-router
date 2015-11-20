@@ -34,7 +34,7 @@ EReturnCode AckResource::receptionAck(map<string, string> parameters, const vect
 {
     EReturnCode res = EReturnCode::OK;
     
-    dbo::Transaction transaction(*session);
+    dbo::Transaction transaction(*session, true);
     
     //on recupere le code d'erreur d'envoi. Si celui çi est egal à 0
     //le message a bien ete envoye
@@ -93,6 +93,7 @@ EReturnCode AckResource::receptionAck(map<string, string> parameters, const vect
         const string err = "[Ack Resource] No sender with this id";
         responseMsg = httpCodeToJSON(res, err);
     }
+    transaction.commit();
     return (res);
 }
 

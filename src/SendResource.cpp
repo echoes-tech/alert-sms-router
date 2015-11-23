@@ -59,6 +59,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
             int port_back = 0;
             Wt::WString number = "missing";
             Wt::WString message = "missing";
+            Wt::WString FQDN_back = "missing";
             bool isValid = false;
             
             try
@@ -66,20 +67,15 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                 Wt::Json::Object result;
                 Wt::Json::parse(sRequest, result);
 
-                if (result.contains("number"))
+                if (result.contains("number")
+                        && result.contains("message")
+                        && result.contains("port_back")
+                        && result.contains("FQDN_back"))
                 {
                     number = result.get("number");
-                }
-                if (result.contains("message"))
-                {
                     message = result.get("message");
-                }
-                if (result.contains("port_back"))
-                {
                     port_back = result.get("port_back");
-                }
-                if (result.contains("number") && result.contains("message") && result.contains("port_back"))
-                {
+                    FQDN_back = result.get("FQDN_back");
                     isValid = true;
                 }
             }
@@ -100,7 +96,7 @@ EReturnCode SendResource::receptionSend(map<string, long long> parameters, const
                 //création du message
                 SavedSend *savedSend = new SavedSend();
                 savedSend->number = boost::lexical_cast<std::string>(number);                
-                savedSend->adress_sender = ipSender;
+                savedSend->adress_sender = boost::lexical_cast<std::string>(FQDN_back);
                 savedSend->port = port_back;
                 savedSend->refenvoi = "";
                 savedSend->code_ref = generateTemporaryCode();
